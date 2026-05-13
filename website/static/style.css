@@ -1,0 +1,421 @@
+body {
+
+    margin: 0;
+    padding: 0;
+
+    background: black;
+
+    color: red;
+
+    font-family: 'Share Tech Mono', monospace;
+
+    overflow: hidden;
+}
+
+
+/* CENTER */
+
+.container {
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+
+    width: 100%;
+
+    z-index: 10;
+}
+
+/* NOISE */
+
+.noise::before {
+
+    content: "";
+
+    position: fixed;
+
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+
+    opacity: 0.06;
+
+    background:
+    repeating-radial-gradient(
+        circle at center,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.01) 1px,
+        transparent 2px
+    );
+
+    animation: noise 0.2s infinite;
+
+    pointer-events: none;
+}
+
+
+@keyframes noise {
+
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    25% {
+        transform: translate(-2px, 1px);
+    }
+
+    50% {
+        transform: translate(2px, -1px);
+    }
+
+    75% {
+        transform: translate(-1px, 2px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+
+/* DARK EDGES */
+
+.vignette {
+
+    position: fixed;
+
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+
+    background:
+    radial-gradient(
+        circle,
+        transparent 40%,
+        rgba(0,0,0,0.95)
+    );
+
+    pointer-events: none;
+}
+
+
+/* GLITCH TITLE */
+
+.glitch {
+
+    position: relative;
+
+    font-size: 20px;
+
+    color: red;
+
+    animation: flicker 2s infinite;
+}
+
+
+.glitch::before,
+.glitch::after {
+
+    content: attr(data-text);
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+}
+
+
+.glitch::before {
+
+    color: cyan;
+
+    transform: translate(-2px);
+
+    opacity: 0.7;
+}
+
+
+.glitch::after {
+
+    color: magenta;
+
+    transform: translate(2px);
+
+    opacity: 0.7;
+}
+
+
+/* FLICKER */
+
+@keyframes flicker {
+
+    0% { opacity: 1; }
+
+    10% { opacity: 0.7; }
+
+    20% { opacity: 1; }
+
+    30% { opacity: 0.8; }
+
+    40% { opacity: 1; }
+
+    100% { opacity: 1; }
+}
+
+
+/* TEXT */
+
+p {
+
+    opacity: 0;
+
+    font-size: 20px;
+
+    animation: fadeIn 2s forwards;
+}
+
+
+.fade1 { animation-delay: 2s; }
+
+.fade2 { animation-delay: 4s; }
+
+.fade3 { animation-delay: 6s; }
+
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(10px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0px);
+    }
+}
+
+
+/* BUTTONS */
+
+button {
+
+    margin-top: 20px;
+
+    padding: 12px 30px;
+
+    background: darkred;
+
+    color: white;
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    font-size: 16px;
+}
+
+
+button:hover {
+
+    background: red;
+
+    transform: scale(1.1);
+
+    box-shadow:
+        0 0 10px red,
+        0 0 20px darkred;
+}
+
+#bgVideo {
+
+    position: fixed;
+
+    right: 0;
+    bottom: 0;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    object-fit: cover;
+
+    z-index: -10;
+
+    opacity: 0.35;
+
+    filter:
+        grayscale(100%)
+        contrast(140%)
+        brightness(40%)
+        blur(1px);
+}
+
+body {
+
+    animation: screenFlicker 0.15s infinite;
+}
+
+@keyframes screenFlicker {
+
+    0% { opacity: 1; }
+
+    50% { opacity: 0.98; }
+
+    100% { opacity: 1; }
+}
+
+#flashImage,
+#flashVideo {
+
+    position: fixed;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 9999;
+
+    transition: opacity 0.05s;
+
+    filter:
+        grayscale(100%)
+        contrast(180%)
+        brightness(70%);
+}
+
+
+#flashVideo {
+
+    width: 400px;
+}
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+}
+
+#audioButton {
+
+    position: fixed;
+
+    bottom: 20px;
+
+    left: 20px;
+
+    z-index: 9999;
+
+    background: rgba(80, 0, 0, 0.7);
+
+    border: 1px solid darkred;
+
+    backdrop-filter: blur(4px);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+input {
+    background: darkred;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    text-align: center;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+#logoutButton {
+
+    position: fixed;
+
+    bottom: 20px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 9999;
+}
+
+/* USERNAME — fixed top-right */
+
+.username {
+
+    position: fixed;
+
+    top: 16px;
+
+    right: 20px;
+
+    z-index: 9999;
+
+    font-size: 14px;
+
+    text-align: right;
+}
+
+/* Near the button — normal flow */
+.back-link {
+    display: inline-block;
+    margin-top: 13px;
+    color: rgba(255, 0, 0, 0.5);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: red;
+}
+
+/* Pinned to bottom center */
+.back-link-2 {
+    position: fixed;
+    bottom: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 0, 0, 0.5);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+
+.back-link-2:hover {
+    color: red;
+}

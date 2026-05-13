@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+
+    <!-- Horror font -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="noise">
+
+    <!-- VHS background -->
+    <video autoplay muted loop id="bgVideo">
+        <source src="{{ url_for('static', filename='vhs.mp4') }}" type="video/mp4">
+    </video>
+
+    <!-- Dark overlay -->
+    <div class="overlay"></div>
+
+    <!-- USERNAME in top-right -->
+    <h1 class="glitch username" data-text="Signed in as: {{ username }}">
+        Signed in as: {{ username }}
+    </h1>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <p class="fade1 message">SYSTEM ONLINE</p>
+        <p class="fade2 message">Connection Stable</p>
+
+        <div class="buttons">
+            <a href="/game"><button>Button</button></a>
+        </div>
+
+    </div>
+
+    <button onclick="toggleAudio()" id="audioButton">Mute</button>
+
+    <a href="/logout" id="logoutButton"><button>Logout</button></a>
+
+    <!-- FLASHING IMAGES/VIDEOS -->
+    <img id="flashImage">
+    <video id="flashVideo" muted></video>
+
+    <!-- AMBIENT AUDIO -->
+    <audio id="bgAudio" autoplay loop></audio>
+
+    <script>
+        // RANDOM AMBIENCE
+        const sounds = [
+            "{{ url_for('static', filename='ambience1.mp3') }}",
+            "{{ url_for('static', filename='ambience2.mp3') }}",
+            "{{ url_for('static', filename='ambience3.mp3') }}"
+        ];
+
+        const audio = document.getElementById("bgAudio");
+        audio.src = sounds[Math.floor(Math.random() * sounds.length)];
+
+        // MUTE BUTTON
+        function toggleAudio() {
+            audio.muted = !audio.muted;
+            document.getElementById("audioButton").innerText =
+                audio.muted ? "Unmute" : "Mute";
+        }
+
+        // FLASH SYSTEM
+        const flashImage = document.getElementById("flashImage");
+        const flashVideo = document.getElementById("flashVideo");
+
+        const media = [
+            { type: "image", src: "{{ url_for('static', filename='scary1.png') }}" },
+            { type: "image", src: "{{ url_for('static', filename='scary2.png') }}" },
+            { type: "image", src: "{{ url_for('static', filename='scary3.png') }}" },
+            { type: "video", src: "{{ url_for('static', filename='ghost.webm') }}" },
+            { type: "video", src: "{{ url_for('static', filename='hallway.webm') }}" }
+        ];
+
+        function randomFlash() {
+            flashImage.style.opacity = "0";
+            flashVideo.style.opacity = "0";
+
+            const item = media[Math.floor(Math.random() * media.length)];
+
+            let x, y;
+            do {
+                x = Math.random() * window.innerWidth;
+                y = Math.random() * window.innerHeight;
+            } while (
+                x > window.innerWidth * 0.3 &&
+                x < window.innerWidth * 0.7 &&
+                y > window.innerHeight * 0.3 &&
+                y < window.innerHeight * 0.7
+            );
+
+            let size;
+            if (Math.random() < 0.15) {
+                size = Math.random() * 180 + 120;
+            } else {
+                size = Math.random() * 70 + 40;
+            }
+
+            const rotation = Math.random() * 20 - 10;
+
+            if (item.type === "image") {
+                flashImage.src = item.src;
+                flashImage.style.left = x + "px";
+                flashImage.style.top = y + "px";
+                flashImage.style.width = size + "px";
+                flashImage.style.transform = `rotate(${rotation}deg)`;
+                flashImage.style.opacity = "1";
+                document.body.style.filter = "brightness(1.3)";
+                setTimeout(() => {
+                    flashImage.style.opacity = "0";
+                    document.body.style.filter = "brightness(1)";
+                }, 80);
+            } else {
+                flashVideo.src = item.src;
+                flashVideo.style.left = x + "px";
+                flashVideo.style.top = y + "px";
+                flashVideo.style.width = size + "px";
+                flashVideo.style.transform = `rotate(${rotation}deg)`;
+                flashVideo.style.opacity = "1";
+                flashVideo.play();
+                document.body.style.filter = "brightness(1.3)";
+                setTimeout(() => {
+                    flashVideo.pause();
+                    flashVideo.currentTime = 0;
+                    flashVideo.style.opacity = "0";
+                    document.body.style.filter = "brightness(1)";
+                }, 500);
+            }
+
+            let nextTime;
+            if (Math.random() < 0.25) {
+                nextTime = Math.random() * 400 + 100;
+            } else {
+                nextTime = Math.random() * 4000 + 800;
+            }
+
+            setTimeout(randomFlash, nextTime);
+        }
+
+        randomFlash();
+    </script>
+
+</body>
+</html>
